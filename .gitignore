@@ -1,0 +1,32 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# API Keys / Secrets (jangan pernah commit!)
+.env
+.env.local
+secrets.json
+api-keys.txt
+
+# Node (jika ada tooling)
+node_modules/
+npm-debug.log*
+yarn-error.log
+
+# Build output
+dist/
+build/
+*.zip
+*.crx
+*.pem
