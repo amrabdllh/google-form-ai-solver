@@ -1,54 +1,65 @@
-# 🤖 Google Form AI Solver v2.0
+# 🤖 Google Form AI Solver v2.1.2
 
-Chrome Extension yang otomatis menjawab soal Google Form — pilih AI provider favoritmu!
+**Chrome Extension** yang otomatis menjawab soal Google Form menggunakan AI (KoboiLLM, Gemini, Grok, ChatGPT, Claude).
 
-## ✨ AI Provider yang Didukung
+![Demo](https://i.imgur.com/xxxxxxxx.png) <!-- nanti kamu bisa ganti dengan screenshot -->
 
-| Provider | Model | Free Tier |
-|----------|-------|-----------|
-| 🟢 **ChatGPT** (OpenAI) | gpt-4o-mini | $5 free credit akun baru |
-| 💎 **Gemini** (Google) | gemini-1.5-flash | Gratis tanpa kartu kredit! |
-| 𝕏 **Grok** (xAI) | grok-3-mini | Free quota bulanan |
-| 🔴 **Claude** (Anthropic) | claude-sonnet | Berbayar |
+## ✨ Fitur Utama
+- Support **5 AI Provider** (termasuk KoboiLLM lokal Indonesia)
+- Auto Solve (otomatis jawab saat form dibuka)
+- Manual “Jawab Sekarang”
+- Deteksi otomatis tipe soal (radio, checkbox, dropdown, essay)
+- **Fix terbaru v2.1.2**: Selector lebih robust untuk Google Forms update 2026
+- Tampilan overlay loading yang keren
+
+## AI Provider yang Didukung
+
+| Provider       | Status     | Keterangan                          |
+|----------------|------------|-------------------------------------|
+| 🇮🇩 KoboiLLM   | Lokal      | Top up Rupiah, 100+ model           |
+| 💎 Gemini      | FREE       | 100% gratis tanpa kartu kredit      |
+| 𝕏 Grok         | FREE       | Quota bulanan                       |
+| 🟢 ChatGPT     | Berbayar   | gpt-4o-mini                         |
+| 🔴 Claude      | Berbayar   | Claude Sonnet                       |
 
 ## 🚀 Cara Install
 
-1. Extract folder `gform-ai-extension` ke komputer
-2. Buka Chrome → `chrome://extensions`
-3. Aktifkan **Developer Mode** (pojok kanan atas)
-4. Klik **"Load unpacked"** → pilih folder `gform-ai-extension`
+1. Download / Clone repo ini
+2. Buka Chrome → ketik `chrome://extensions`
+3. Aktifkan **Developer mode** (pojok kanan atas)
+4. Klik **Load unpacked** → pilih folder `gform-ai-extension`
+5. Ekstensi langsung aktif!
 
-## 🔑 Cara Dapat API Key Gratis
+## 🔑 Cara Mendapatkan API Key
 
-### Gemini (Paling Mudah & 100% Gratis)
-1. Buka https://aistudio.google.com/app/apikey
-2. Login Google → klik "Create API Key"
-3. Copy key (format: `AIzaSy...`)
+- **KoboiLLM** (paling recommended untuk Indonesia)  
+  Daftar di [docs.koboillm.com](https://docs.koboillm.com) atau WA +62 895-2806-7981
 
-### ChatGPT
-1. Daftar di https://platform.openai.com
-2. Pergi ke API Keys → Create new key
-3. Ada $5 free credit untuk akun baru (format: `sk-...`)
+- **Gemini** (Gratis)  
+  https://aistudio.google.com/app/apikey
 
-### Grok
-1. Daftar di https://console.x.ai
-2. API Keys → Create key
-3. Ada free monthly quota (format: `xai-...`)
+- **Grok**  
+  https://console.x.ai → Create API Key
 
-## 🎮 Cara Pakai
+- **ChatGPT / Claude**  
+  Platform masing-masing (perlu isi saldo)
 
-1. Buka Google Form berisi soal
+## 🎮 Cara Penggunaan
+
+1. Buka Google Form yang berisi soal
 2. Klik ikon ekstensi di toolbar Chrome
-3. Pilih AI provider & masukkan API key → Simpan
-4. Klik **✨ Jawab Sekarang** — atau aktifkan **Auto Solve** agar otomatis!
+3. Pilih provider → masukkan API Key → **Simpan**
+4. Klik **✨ Jawab Sekarang**  
+   atau aktifkan **Auto Solve** agar otomatis tiap form dibuka
 
-## 📁 Struktur File
-```
-gform-ai-extension/
-├── manifest.json
-├── popup.html / popup.js
-├── content.js
-├── overlay.css
-├── background.js
-└── icons/
-```
+## Changelog
+- **v2.1.2** (17 April 2026) – Perbaikan selector Google Forms terbaru
+- **v2.1.0** – Tambah KoboiLLM + UI popup baru
+- **v2.0** – Release awal
+
+## Kontribusi
+Pull request sangat dihargai! Kalau ada bug atau mau tambah fitur (support gambar soal, reasoning, dll), silakan buka issue.
+
+---
+
+**Made with ❤️ for Indonesian students & teachers**
