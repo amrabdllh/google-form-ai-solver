@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Form AI Solver</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 340px;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1a;
+      color: #e8e8f0;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      padding: 18px 20px;
+      text-align: center;
+      border-bottom: 1px solid #ffffff15;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 60% 40%, #6c63ff 0%, transparent 55%);
+      opacity: 0.1;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.08} 50%{opacity:.18} }
+
+    .logo { font-size: 26px; margin-bottom: 3px; }
+    .title { font-size: 15px; font-weight: 700; letter-spacing: 1.5px; color: #fff; text-transform: uppercase; }
+    .subtitle { font-size: 11px; color: #8888aa; margin-top: 2px; }
+
+    .body { padding: 16px; }
+
+    .section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+      color: #8888aa; text-transform: uppercase; margin-bottom: 8px;
+    }
+
+    .providers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .provider-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 9px 11px;
+      background: #1a1a2e;
+      border: 1.5px solid #ffffff12;
+      border-radius: 9px;
+      color: #aaaacc;
+      font-size: 12px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-align: left;
+      position: relative;
+    }
+    .provider-btn .picon { font-size: 15px; flex-shrink:0; }
+    .provider-btn:hover { border-color: #ffffff30; color: #fff; }
+    .provider-btn.active {
+      border-color: var(--provider-color, #6c63ff);
+      background: color-mix(in srgb, var(--provider-color, #6c63ff) 12%, #1a1a2e);
+      color: #fff;
+      box-shadow: 0 0 10px color-mix(in srgb, var(--provider-color,#6c63ff) 30%, transparent);
+    }
+
+    .free-badge {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+      background: #1a3a1a; color: #6af5a0;
+      border: 1px solid #6af5a030;
+      border-radius: 4px; padding: 1px 5px;
+      margin-left: auto; flex-shrink:0;
+    }
+    .local-badge {
+      font-size: 9px; font-weight: 700;
+      background: #2a1a3a; color: #c084fc;
+      border: 1px solid #c084fc30;
+      border-radius: 4px; padding: 1px 5px;
+      margin-left: auto; flex-shrink:0;
+    }
+
+    .divider { height: 1px; background: #ffffff10; margin: 13px 0; }
+
+    .api-hint {
+      font-size: 11px; color: #8888aa; margin-bottom: 8px; line-height: 1.6;
+    }
+    .api-hint a { color: #6c63ff; text-decoration: none; }
+    .api-hint a:hover { text-decoration: underline; }
+    .api-hint code {
+      background: #1a1a2e; padding: 1px 5px; border-radius: 4px;
+      font-size: 10px; color: #c084fc;
+    }
+
+    .api-input-wrap { position: relative; }
+    .api-input-wrap input {
+      width: 100%; padding: 10px 38px 10px 12px;
+      background: #1a1a2e; border: 1px solid #ffffff15;
+      border-radius: 8px; color: #e8e8f0;
+      font-size: 12px; font-family: 'Courier New', monospace;
+      outline: none; transition: border-color 0.2s;
+    }
+    .api-input-wrap input:focus { border-color: var(--provider-color, #6c63ff); }
+    .toggle-vis {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: #8888aa; cursor: pointer; font-size: 14px;
+    }
+
+    /* model selector row — shown only for KoboiLLM */
+    .model-row {
+      margin-top: 8px;
+      display: none;
+    }
+    .model-row.visible { display: block; }
+    .model-row select {
+      width: 100%;
+      padding: 9px 12px;
+      background: #1a1a2e; border: 1px solid #ffffff15;
+      border-radius: 8px; color: #e8e8f0;
+      font-size: 12px; outline: none;
+      cursor: pointer; transition: border-color 0.2s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238888aa' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+    .model-row select:focus { border-color: var(--provider-color, #6c63ff); }
+
+    .save-btn {
+      width: 100%; margin-top: 8px; padding: 8px;
+      background: transparent;
+      border: 1px solid var(--provider-color, #6c63ff);
+      color: var(--provider-color, #6c63ff);
+      border-radius: 8px; font-size: 11px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .save-btn:hover { background: var(--provider-color,#6c63ff); color: #fff; }
+
+    .auto-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .auto-label { font-size: 13px; color: #ccccdd; font-weight: 500; }
+    .auto-desc { font-size: 10px; color: #8888aa; margin-top: 1px; }
+
+    .toggle { position: relative; width: 42px; height: 22px; flex-shrink:0; }
+    .toggle input { display: none; }
+    .toggle-slider {
+      position: absolute; inset: 0; background: #333355;
+      border-radius: 11px; cursor: pointer; transition: background 0.25s;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px; left: 3px; top: 3px;
+      background: #8888aa; border-radius: 50%; transition: all 0.25s;
+    }
+    .toggle input:checked + .toggle-slider { background: var(--provider-color,#6c63ff); }
+    .toggle input:checked + .toggle-slider::before { left: 23px; background: #fff; }
+
+    .solve-btn {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg,
+        var(--provider-color,#6c63ff),
+        color-mix(in srgb, var(--provider-color,#6c63ff) 70%, #000));
+      border: none; border-radius: 10px; color: #fff;
+      font-size: 14px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+    }
+    .solve-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px color-mix(in srgb, var(--provider-color,#6c63ff) 40%, transparent); }
+    .solve-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .status {
+      margin-top: 10px; padding: 9px 12px;
+      border-radius: 8px; font-size: 12px;
+      display: none; align-items: center; gap: 8px;
+    }
+    .status.show { display: flex; }
+    .status.info  { background: #1a2a4a; color: #6ab0f5; border: 1px solid #6ab0f520; }
+    .status.success { background: #1a3a2a; color: #6af5a0; border: 1px solid #6af5a020; }
+    .status.error { background: #3a1a1a; color: #f56a6a; border: 1px solid #f56a6a20; }
+
+    .spinner {
+      width: 13px; height: 13px;
+      border: 2px solid currentColor; border-top-color: transparent;
+      border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink:0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .not-form {
+      text-align: center; padding: 28px 20px;
+      color: #8888aa; font-size: 13px;
+    }
+    .not-form .icon { font-size: 36px; margin-bottom: 10px; }
+
+    .footer {
+      padding: 9px 18px 12px; text-align: center;
+      font-size: 10px; color: #55556a;
+      border-top: 1px solid #ffffff08;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🤖</div>
+    <div class="title">Form AI Solver</div>
+    <div class="subtitle">ChatGPT · Gemini · Grok · Claude · KoboiLLM</div>
+  </div>
+
+  <div id="main-content" class="body">
+
+    <div class="section-label">Pilih AI Provider</div>
+    <div class="providers">
+      <button class="provider-btn" data-provider="koboi" style="--provider-color:#c084fc">
+        <span class="picon">🇮🇩</span> KoboiLLM
+        <span class="local-badge">LOKAL</span>
+      </button>
+      <button class="provider-btn" data-provider="gemini" style="--provider-color:#4285f4">
+        <span class="picon">💎</span> Gemini
+        <span class="free-badge">FREE</span>
+      </button>
+      <button class="provider-btn" data-provider="grok" style="--provider-color:#1d9bf0">
+        <span class="picon">𝕏</span> Grok
+        <span class="free-badge">FREE</span>
+      </button>
+      <button class="provider-btn" data-provider="openai" style="--provider-color:#10a37f">
+        <span class="picon">🟢</span> ChatGPT
+      </button>
+      <button class="provider-btn" data-provider="claude" style="--provider-color:#e94560">
+        <span class="picon">🔴</span> Claude
+      </button>
+    </div>
+
+    <div class="section-label">API Key</div>
+    <div class="api-hint" id="apiHint">Pilih provider di atas.</div>
+    <div class="api-input-wrap">
+      <input type="password" id="apiKey" placeholder="Pilih provider dulu..." disabled />
+      <button class="toggle-vis" id="toggleVis">👁</button>
+    </div>
+
+    <!-- Model selector for KoboiLLM -->
+    <div class="model-row" id="modelRow">
+      <select id="modelSelect">
+        <option value="openai/gpt-4o-mini">openai/gpt-4o-mini (Recommended)</option>
+        <option value="anthropic/claude-4-5-sonnet">anthropic/claude-4-5-sonnet</option>
+        <option value="google/gemini-2.0-flash">google/gemini-2.0-flash</option>
+        <option value="deepseek/deepseek-chat">deepseek/deepseek-chat</option>
+        <option value="deepseek/deepseek-r1">deepseek/deepseek-r1</option>
+        <option value="meta-llama/llama-3.3-70b-instruct">meta-llama/llama-3.3-70b</option>
+      </select>
+    </div>
+
+    <button class="save-btn" id="saveKey">Simpan</button>
+
+    <div class="divider"></div>
+
+    <div class="auto-row">
+      <div>
+        <div class="auto-label">Auto Solve</div>
+        <div class="auto-desc">Jawab otomatis saat form dibuka</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="autoSolve" />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <button class="solve-btn" id="solveBtn" disabled>✨ Jawab Sekarang</button>
+
+    <div class="status" id="status">
+      <div class="spinner" id="spinner"></div>
+      <span id="statusText"></span>
+    </div>
+  </div>
+
+  <div id="not-form" class="not-form" style="display:none">
+    <div class="icon">📋</div>
+    <div>Buka Google Form terlebih dahulu untuk menggunakan ekstensi ini</div>
+  </div>
+
+  <div class="footer">Form AI Solver v2.1 &bull; Multi AI Provider</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
